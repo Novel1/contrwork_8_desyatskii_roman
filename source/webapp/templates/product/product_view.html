@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block menu %}
+
+{% endblock %}
+{% block content %}
+{#    {% include 'partial/search.html' %}#}
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+                <div class="col-lg-4">
+                    <h2 class="fw-normal">{{ product.name }}</h2>
+                    <p>{{ product.description }}</p>
+                    <p><a class="btn btn-secondary" href="{% url 'product_detail' product.pk %}">Подробнее »</a></p>
+                </div>
+        {% if user.is_authenticated %}
+            <form action="{% url 'review' product.pk %}" method="post">
+                {% csrf_token %}
+                {% bootstrap_form review_form %}
+                {% bootstrap_button button_type="submit" content='Добавить отзыв' %}
+            </form>
+
+        {% endif %}
+        {% endfor %}
+        </div>
+    {% if is_paginated %}
+        {% include 'partial/paginator.html' %}
+    {% endif %}
+    </div>
+{% endblock %}

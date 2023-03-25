@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <h1>Вы точно хотите удалить отзыв?</h1>
+        <div class="body">
+            <h1>Автора: {{ review.author }}</h1>
+            <h1>Отзыв: {{ review.text }}</h1>
+            <h1>Рейтинг: {{ review.grade }}</h1>
+        </div>
+        <form action="{% url 'confirm_review_delete' review.pk %}" method="post">
+            {% csrf_token %}
+            <div class="but" style="display: flex">
+                <p><input type="submit" value="Удалить" style="width: 300px"></p>
+                <a href="{% url 'index' %}"><p><input type="button" value="Отмена"
+                                                      style="margin-left: 10px; width: 300px">
+                </p></a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

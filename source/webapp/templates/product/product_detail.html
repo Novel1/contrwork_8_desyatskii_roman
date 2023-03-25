@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block menu %}
+{#    {% if user.is_authenticated %}#}
+    <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'product_delete' product.pk %}">Удалить товар</a>
+        </li>
+    <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'product_update' product.pk %}">Редактировать</a>
+        </li>
+{#    {% endif %}#}
+{% endblock %}
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+     <img src="{{ product.image }}" class="card-img-top" style="width: 200px ;border-radius: 50px; border: 3px solid green; box-shadow: 0 0 7px #666;">
+    <h1 class="display-5 fw-bold">{{ product.name }}</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">{{ product.description }}</p>
+        <p class="lead mb-4">{{ product.category }}</p>
+        {% for  product in product.review_users.all %}
+            <p>Пользователь <b>{{ product.author.username }}</b> - Отзыв: {{ product.text }}</p>
+            <p>Оценка - {{ product.grade }}</p>
+            <p>Email - {{ product.author.email }}</p>
+            {% if user.is_authenticated %}
+            <p><b><a href="{% url 'review_update' product.pk %}">Редактировать отзыв</a></b> | <b><a href="{% url 'review_delete' product.pk %}">Удалить отзыв</a></b></p>
+            {% endif %}
+                {% endfor %}
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <a href="{% url 'index' %}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Вернуться назад</button></a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
